@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../includes/header.php');
+include('../includes/adminHeader.php');
 include('../includes/config.php');
 
 // var_dump($_SESSION);
@@ -13,6 +13,7 @@ $item = mysqli_fetch_assoc($result);
 ?>
 
 <body>
+
     <div class="container">
         <?php include('../includes/alert.php'); ?>
         <form method="POST" action="<?php echo "update.php/{$item['item_id']}" ?>" enctype="multipart/form-data">
@@ -44,12 +45,13 @@ $item = mysqli_fetch_assoc($result);
                                 echo $_SESSION['cost'];
                             else
                                 echo $item['cost_price'];
-                            ?>" <small><?php
-                                        if (isset($_SESSION['costError'])) {
-                                            echo $_SESSION['costError'];
-                                            unset($_SESSION['costError']);
-                                        }
-                                        ?></small>
+                            ?>" />
+                <small><?php
+                        if (isset($_SESSION['costError'])) {
+                            echo $_SESSION['costError'];
+                            unset($_SESSION['costError']);
+                        }
+                        ?></small>
                 <label for="sell">sell price</label>
 
                 <input type="text" class="form-control" id="sell" placeholder="Enter sell price" name="sell_price"
@@ -60,6 +62,12 @@ $item = mysqli_fetch_assoc($result);
                             else
                                 echo $item['sell_price'];
                             ?>">
+                <small><?php
+                        if (isset($_SESSION['sellError'])) {
+                            echo $_SESSION['sellError'];
+                            unset($_SESSION['sellError']);
+                        }
+                        ?></small>
 
                 <label for="qty">quantity</label>
 
@@ -69,6 +77,12 @@ $item = mysqli_fetch_assoc($result);
                                                                                                             else
                                                                                                                 echo $item['quantity'];
                                                                                                             ?>" />
+                <small><?php
+                        if (isset($_SESSION['qtyError'])) {
+                            echo $_SESSION['qtyError'];
+                            unset($_SESSION['qtyError']);
+                        }
+                        ?></small>
                 <input class="form-control" type="file" name="img_path" /><br />
                 <small><?php
                         if (isset($_SESSION['imageError'])) {
