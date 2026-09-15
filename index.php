@@ -8,7 +8,7 @@ include('./includes/config.php');
 <h2>Your Shopping Cart</h2>
 
 <?php
-print_R($_SESSION);
+print_r($_SESSION);
 if (isset($_SESSION["cart_products"]) && count($_SESSION["cart_products"]) > 0) {
     echo '<div class="cart-view-table-front" id="view-cart">';
     echo '<h3>Your Shopping Cart</h3>';
@@ -39,7 +39,7 @@ if (isset($_SESSION["cart_products"]) && count($_SESSION["cart_products"]) > 0) 
     echo "</form>";
     echo '</div>';
 }
-$sql = "SELECT i.item_id AS itemId, description, img_path, sell_price FROM item i INNER JOIN stock s USING (item_id)  ORDER BY i.item_id ASC";
+$sql = "SELECT i.item_id AS itemId, description, img_path, sell_price, s.quantity as qty FROM item i INNER JOIN stock s USING (item_id)  ORDER BY i.item_id ASC";
 
 $results = mysqli_query($conn, $sql);
 if ($results) {
@@ -58,7 +58,7 @@ if ($results) {
     
     <label>
         <span>Quantity</span>
-        <input type="number" size="2" maxlength="2" name="item_qty" value="1" />
+        <input type="number" size="2" maxlength="2" name="item_qty" value="1" min="1" max={$row['qty']} />
     </label>
     </fieldset>
     <input type="hidden" name="item_id" value="{$row['itemId']}" />
