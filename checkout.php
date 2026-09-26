@@ -2,22 +2,23 @@
 session_start();
 include('includes/header.php');
 include('includes/config.php');
-// print_r($_SESSION);
+print_r($_SESSION);
 try {
-    // $sql = "SELECT customer_id FROM customer WHERE user_id = {$_SESSION['user_id']} LIMIT 1";
 
-    // $result = mysqli_query($conn, $sql);
-    // $row = mysqli_fetch_assoc($result);
     mysqli_begin_transaction($conn);
+    $sql = "SELECT customer_id FROM customer WHERE user_id = {$_SESSION['user_id']} LIMIT 1";
+
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
     // mysqli_query($conn, 'START TRANSACTION');
     // $customer_id = $row['customer_id'];
-    $customer_id = 1;
+    // $customer_id = 1;
     $q = 'INSERT INTO orderinfo(customer_id, date_placed, date_shipped,shipping) VALUES (?, NOW(), NOW(), ?)';
     $shipping = 10.00;
     // $shipvia = 1;
 
     $stmt1 = mysqli_prepare($conn, $q);
-    mysqli_stmt_bind_param($stmt1, 'id', $customer_id, $shipping);
+    mysqli_stmt_bind_param($stmt1, 'id', $row['customer_id'], $shipping);
     mysqli_stmt_execute($stmt1);
     $orderinfo_id = mysqli_insert_id($conn);
     echo $orderinfo_id;
@@ -43,6 +44,8 @@ try {
 
     mysqli_commit($conn);
     unset($_SESSION['cart_products']);
+    $_SESSION['success'] = 'thank you for your order';
+    header("Location: index.php");
 } catch (mysqli_sql_exception $e) {
     echo $e->getMessage();
     mysqli_rollback($conn);

@@ -5,6 +5,7 @@ include('./includes/config.php');
 
 ?>
 <h1 align="center">Products </h1>
+<?php include("./includes/alert.php"); ?>
 <h2>Your Shopping Cart</h2>
 
 <?php
